@@ -38,11 +38,17 @@
 
 # TODO: Edit this sample idea.
 
-- topic: Numerical Linear Algebra
-  idea:  Develop a fast matrix multiplication algorithm to reduce
-         energy consumption during deep learning inference.
+- topic: ODE Integrators
+  idea:  Develop a fast integrator to solve for Gross-Pitaevskii equation of ALP (cosine potential) Bose-Einstein Condensate
+         under gravitational self-interaction up to degree six.
 
 # TODO: Add two more project ideas below, following the same format as
 # the example above.
 # Remember to ensure that each idea is distinct and concise, and each
 # "topic" must be one of the listed course topics.
+
+- topic: PDE Solvers
+  idea:  Generate efficient numerical solver of EFEs under Galileon theories or general modified gravity models.
+
+- topic: Numerical Linear Algebra
+  idea:  Numerically efficient solver of mode matrices from complex scalar field theories subject to cosmological influence.

@@ -31,6 +31,8 @@
 # to overcome catastrophic cancellation.
 # Please make sure that you take care of all the special cases.
 
+cut_off = 1e-6 # Cut-off for catastrophic cancellation
+
 def quadratic(a, b, c):
     """Numerically stable quadratic equation solver
 
@@ -65,3 +67,33 @@ def quadratic(a, b, c):
                 If there is no real root, x1 == x2 == None.
     """
     # TODO: implement the stable quadratic equation solver here
+
+    # So, wanna do some 'edge' cases here. Like, obviously, the x1 and x2 stuff aren't well-defined if a = 0.
+
+    if a == 0:
+        if b == 0:
+            return (None)
+        else:
+            return c / b
+    else: # We also wish to classify complex roots.
+        if b**2 - 4*a*c < 0: # This implies both roots complex
+            x1,x2 = None,None # Restrict domain to reals.
+            return x1,x2
+        elif b**2 == 4*a*c: # This implies a single real root
+            x1,x2 = -b/(2*a), None # Standard stuff.
+            return x1,x2
+        elif b**2 - 4*a*c > 0: # This implies two real roots... the real thing to watch out for for 
+        # catastrophically unstable crap.
+        # So how do I do that? From the notes, we see catastrophic instability if b >> a,c, such that
+        # \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} = -\frac{b}{2a} \left(1 \mp \sqrt{1 - \frac{4ac}{b^2}} \right)
+        # \approx -\frac{b}{2a} (1 \mp (1 - \frac{2ac}{b^2})) = -\frac{b}{2a}((1 \mp 1) \pm \frac{2ac}{b^2})
+        # = -\frac{b(1 \mp 1)}{2a} \mp \frac{c}{b}
+        # Clearly one root will be approximately -c/b ~ 0 (linear approx.), the other c/b + b/a ~ b/a (eventually ax^2 is
+        # large enough to reach back to zero). Let's imagine some cut-off, 1e-6, such that these approximations come into play
+        # if b^2 - 4ac < \varepsilon, \varepsilon = 1e-6
+            if b**2 - 4*a*c < cut_off:
+                x1, x2 = -c/b, c/b + b/a
+                return x1, x2
+            else:
+                x1,x2 = (-b - (b**2 - 4*a*c)**0.5)/(2*a),(-b + (b**2 - 4*a*c)**0.5)/(2*a)
+                return x1,x2
